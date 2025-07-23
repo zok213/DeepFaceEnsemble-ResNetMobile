@@ -1,0 +1,50 @@
+# Core dependencies
+torch>=1.12.0
+torchvision>=0.13.0
+numpy>=1.21.0
+opencv-python>=4.5.0
+Pillow>=8.3.0
+scikit-learn>=1.0.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+tqdm>=4.62.0
+tensorboard>=2.7.0
+
+# Face recognition specific
+face-recognition>=1.3.0
+dlib>=19.22.0
+mtcnn>=0.1.1
+insightface>=0.7.3
+
+# Data handling
+pandas>=1.3.0
+h5py>=3.6.0
+pickle5>=0.0.12
+
+# Configuration
+pyyaml>=6.0
+easydict>=1.9
+
+# Metrics and evaluation
+scipy>=1.7.0
+sklearn>=0.0
+
+# Ensemble methods
+scikit-learn>=1.0.0
+xgboost>=1.5.0
+
+# Visualization
+plotly>=5.5.0
+wandb>=0.12.0
+
+# Development tools
+jupyter>=1.0.0
+ipython>=7.30.0
+black>=21.0.0
+flake8>=4.0.0
+pytest>=6.2.0
+
+# Optional GPU acceleration
+# cupy-cuda116>=10.0.0  # Uncomment for CUDA 11.6
+# cupy-cuda117>=11.0.0  # Uncomment for CUDA 11.7
+# cupy-cuda118>=12.0.0  # Uncomment for CUDA 11.8

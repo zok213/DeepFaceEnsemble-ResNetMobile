@@ -1,0 +1,134 @@
+# Configuration for SE-ResNet-50 + MobileFaceNet Ensemble
+# Training Configuration
+TRAIN:
+  # Dataset settings
+  dataset_root: "./data/VGGFace2"
+  train_list: "./data/VGGFace2/train_list.txt"
+  val_list: "./data/VGGFace2/val_list.txt"
+  
+  # Training parameters
+  epochs: 100
+  batch_size: 64
+  learning_rate: 0.001
+  weight_decay: 0.0005
+  momentum: 0.9
+  
+  # Loss function
+  loss_type: "CosFace"  # Options: "Softmax", "CosFace", "ArcFace"
+  margin: 0.4
+  scale: 64
+  
+  # Optimizer
+  optimizer: "SGD"  # Options: "SGD", "Adam", "AdamW"
+  lr_scheduler: "StepLR"
+  step_size: 20
+  gamma: 0.1
+  
+  # Checkpoints
+  save_interval: 10
+  checkpoint_dir: "./checkpoints"
+  resume_from: null
+  
+  # Multi-GPU training
+  use_parallel: true
+  gpu_ids: [0]  # [0, 1, 2, 3] for multi-GPU
+
+# Model Configuration
+MODEL:
+  # SE-ResNet-50 Configuration
+  se_resnet:
+    name: "SE-ResNet-50"
+    input_size: [112, 112]
+    embedding_dim: 512
+    dropout: 0.5
+    pretrained: true
+    pretrained_path: "./models/pretrained/se_resnet50_vggface2.pth"
+    
+  # MobileFaceNet Configuration
+  mobile_facenet:
+    name: "MobileFaceNet"
+    input_size: [112, 112]
+    embedding_dim: 512
+    dropout: 0.5
+    pretrained: true
+    pretrained_path: "./models/pretrained/mobilefacenet_vggface2.pth"
+    
+  # Ensemble Configuration
+  ensemble:
+    method: "weighted_average"  # Options: "average", "weighted_average", "voting"
+    weights: [0.6, 0.4]  # [SE-ResNet-50, MobileFaceNet]
+    temperature: 1.0
+    
+# Data Configuration
+DATA:
+  # Image preprocessing
+  image_size: [112, 112]
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+  
+  # Data augmentation
+  augmentation:
+    horizontal_flip: true
+    rotation: 10
+    color_jitter: 0.2
+    random_crop: true
+    normalize: true
+    
+  # Data loading
+  num_workers: 8
+  pin_memory: true
+  
+# Evaluation Configuration
+EVAL:
+  # IJB-C evaluation
+  ijb_c_root: "./data/IJB-C"
+  eval_batch_size: 256
+  
+  # Metrics
+  metrics:
+    - "TAR@FAR"
+    - "Rank-1"
+    - "ROC-AUC"
+    - "Verification"
+    
+  # Performance targets
+  targets:
+    tar_at_far_1e4: 0.862
+    rank_1: 0.914
+    
+# Environment Configuration
+ENV:
+  # Paths
+  output_dir: "./outputs"
+  log_dir: "./logs"
+  tensorboard_dir: "./tensorboard"
+  
+  # Logging
+  log_level: "INFO"
+  print_freq: 100
+  
+  # Reproducibility
+  seed: 42
+  deterministic: true
+  
+  # Mixed precision training
+  use_amp: true
+  
+  # Distributed training
+  distributed: false
+  world_size: 1
+  rank: 0
+  dist_url: "env://"
+  
+# Hardware Configuration
+HARDWARE:
+  # GPU settings
+  device: "cuda"
+  gpu_memory_fraction: 0.9
+  
+  # CPU settings
+  num_threads: 8
+  
+  # Memory optimization
+  gradient_checkpointing: false
+  dataloader_workers: 8
